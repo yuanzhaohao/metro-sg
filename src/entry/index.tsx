@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { ConnectedRouter } from 'react-router-redux';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from '../redux/index';
@@ -12,13 +13,11 @@ import './index.scss';
 const App = () => (
   <Provider store={store}>
     <Router>
-      <div className="app-content">
-        <Switch>
-          <Route exact path="/" component={List} />
-          <Route exact path="/:startStation/:endStation" component={List} />
-          <Route exact path="*" component={List} />
-        </Switch>
-      </div>
+      <Switch>
+        <Route exact path="/" component={List} />
+        <Route exact path="/:startStation/:endStation" component={List} />
+        <Route exact path="*" component={List} />
+      </Switch>
     </Router>
   </Provider>
 );

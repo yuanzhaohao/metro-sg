@@ -1,28 +1,88 @@
-// import stations from './stations';
-import stations from './stations';
 import { includes, forEach, isArray } from 'lodash-es';
-
-export type LineItem = {
-  isRoundLine?: boolean,
-  stations: string[];
-  transformStations: string[];
-};
+import { OriginStationData, LineData, StationData, ShortestRoutes } from '../redux/typings'
 
 export type StationListType = string[][];
-export type HistoryType = string[];
-export type ShortestRoutes = string[][];
+export type HistoryType = {
+  [key: string]: boolean,
+};
 
-const { lineData, stationData } = getOriginalData();
-console.log('lineData', lineData);
-// console.log('stationData', stationData);
+export function guideMetroRoutes(lineData: LineData, stationData: StationData, fromStation: string, toStation: string) {
+  if (!stationData[fromStation]) {
+    throw new Error(`${fromStation} is not foound!`);
+  }
+  if (!stationData[toStation]) {
+    throw new Error(`${toStation} is not foound!`);
+  }
 
-function getOriginalData() {
-  const lineData: {
-    [key: string]: LineItem;
-  } = {};
-  const stationData: { [key: string]: string[] } = {};
+  if (fromStation === toStation) {
+    return fromStation;
+  }
+  const startLines = stationData[fromStation];
+  const shortestRoutes: ShortestRoutes = [];
+  let history: HistoryType | null = {};
+  let minTransCount = 5;
 
-  forEach(stations, (stationLines, stationKey) => {
+  for (let line of startLines) {
+    guideRoute(fromStation, toStation, line, [], history, 0);
+  }
+
+  shortestRoutes.sort(function(a, b) {
+    return a.length - b.length;
+  });
+  history = null;
+  return shortestRoutes.slice(0, 3);
+
+  function guideRoute(
+    startStation: string,
+    endStation: string,
+    lineKey: string,
+    stationList: StationListType,
+    history: HistoryType,
+    transNum: number,
+  ) {
+    if (transNum > minTransCount) {
+      return;
+    }
+    if (isSameLine(lineData, stationData, startStation, endStation, lineKey)) {
+      const currentRoute = cutLine(lineData, startStation, endStation, lineKey);
+
+      stationList.push(currentRoute)
+      const shortestRoute = stationList.reduce((accumulator, currentValue) => accumulator.concat(currentValue));
+      shortestRoutes.push(Array.from(new Set(shortestRoute)));
+
+      stationList.splice(stationList.indexOf(currentRoute), 1);
+      return;
+    }
+
+    const transformStations = lineData[lineKey].transformStations.filter(v => v !== startStation);
+
+    forEach(transformStations, station => {
+      const currentRoute = cutLine(lineData, startStation, station, lineKey);
+      const historyKey = [startStation, station, lineKey].join(',');
+      const newStationList = stationList.slice();
+      if (history[historyKey]) {
+        newStationList.splice(newStationList.indexOf(currentRoute), 1);
+        return;
+      }
+      history[historyKey] = true;
+
+      const restLines = stationData[station].filter(v => v !== lineKey);
+      forEach(restLines, restLineKey => {
+        const newTransNum = transNum + 1;
+
+        newStationList.push(currentRoute);
+        guideRoute(station, endStation, restLineKey, newStationList, history, newTransNum);
+        newStationList.splice(newStationList.indexOf(currentRoute), 1);
+      });
+    });
+  }
+}
+
+export function getOriginData(originData: OriginStationData) {
+  const lineData: LineData = {};
+  const stationData: StationData  = {};
+
+  forEach(originData, (stationLines, stationKey) => {
     const stationLinesKeys = Object.keys(stationLines);
     const isCircleLine = includes(stationLinesKeys, 'CC') && includes(stationLinesKeys, 'CE');
 
@@ -75,83 +135,12 @@ function getOriginalData() {
   };
 }
 
-
-export function guideMetroRoutes(fromStation: string, toStation: string) {
-  if (!stationData[fromStation]) {
-    throw new Error(`${fromStation} is not foound!`);
-  }
-  if (!stationData[toStation]) {
-    throw new Error(`${toStation} is not foound!`);
-  }
-
-  if (fromStation === toStation) {
-    return fromStation;
-  }
-  const startLines = stationData[fromStation];
-  const history: HistoryType = [];
-  const shortestRoutes: ShortestRoutes = [];
-  let minTransCount = 5;
-
-  for (let line of startLines) {
-    guideRoute(fromStation, toStation, line, [], history, 0);
-  }
-
-  shortestRoutes.sort(function(a, b) {
-    return a.length - b.length;
-  });
-  return shortestRoutes.slice(0, 3);
-
-  function guideRoute(
-    startStation: string,
-    endStation: string,
-    lineKey: string,
-    stationList: StationListType,
-    history: HistoryType,
-    transNum: number,
-  ) {
-    if (transNum > minTransCount) {
-      return;
-    }
-    if (isSameLine(startStation, endStation, lineKey)) {
-      const currentRoute = cutLine(startStation, endStation, lineKey);
-
-      stationList.push(currentRoute)
-      const shortestRoute = stationList.reduce((accumulator, currentValue) => accumulator.concat(currentValue));
-      shortestRoutes.push(Array.from(new Set(shortestRoute));
-      stationList.splice(stationList.indexOf(currentRoute), 1);
-      return;
-    }
-
-    const transformStations = lineData[lineKey].transformStations.filter(v => v !== startStation);
-
-    forEach(transformStations, station => {
-      const currentRoute = cutLine(startStation, station, lineKey);
-      const historyString = [startStation, station].sort().join(',');
-      const newStationList = stationList.slice();
-      if (includes(history, historyString)) {
-        newStationList.splice(newStationList.indexOf(currentRoute), 1);
-        return;
-      }
-      history.push(historyString);
-
-      const restLines = stationData[station].filter(v => v !== lineKey);
-      forEach(restLines, restLineKey => {
-        const newTransNum = transNum + 1;
-
-        newStationList.push(currentRoute);
-        guideRoute(station, endStation, restLineKey, newStationList, history, newTransNum);
-        newStationList.splice(newStationList.indexOf(currentRoute), 1);
-      });
-    });
-  }
-}
-
-function isSameLine(startStation: string, endStation: string, lineKey: string) {
+function isSameLine(lineData: LineData, stationData: StationData, startStation: string, endStation: string, lineKey: string) {
   const { stations } = lineData[lineKey];
   return includes(stations, startStation) && includes(stations, endStation);
 }
 
-function cutLine(startStation: string, endStation: string, lineKey: string) {
+function cutLine(lineData: LineData, startStation: string, endStation: string, lineKey: string) {
   const { stations, isRoundLine } = lineData[lineKey];
   const startIndex = stations.indexOf(startStation);
   const endIndex = stations.indexOf(endStation);

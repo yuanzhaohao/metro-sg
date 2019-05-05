@@ -48,6 +48,13 @@ const createHappypackPlugin = () => {
         happyPackMode: true
       }
     }]),
+    createHappypack('sass', [{
+      loader: 'sass-loader',
+      options: {
+        data: "$icon-base-url: '//yuanzhaohao.github.io/dashkit-ui/static';"
+      }
+    }]),
+    createHappypack('css', ['css-loader']),
   ]
 }
 
@@ -107,7 +114,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loader: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+        loader: ['style-loader', 'happypack/loader?id=css', 'postcss-loader', 'happypack/loader?id=sass'],
       },
       {
         test: /\.(png|jpe?g|gif)(\?.*)?$/,

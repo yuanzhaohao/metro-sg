@@ -7,17 +7,21 @@ module.exports = {
   srcPath: './src',
   distPath: './dist',
   mockPath: './mock',
-  proxyTable: {},
   mockData: false,
   optimizeCommon: {
     'vendor-react': [
       'react',
       'react-dom',
-      'react-router-dom'
+      'react-router-dom',
     ],
     'vendor-redux': [
       'redux',
-      'react-redux'
+      'react-redux',
+      'react-router-redux',
+      'redux-thunk',
+    ],
+    'vendor-dashkit': [
+      'dashkit-ui',
     ],
     'vendor-lib': [
       'classnames',

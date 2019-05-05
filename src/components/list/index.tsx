@@ -1,30 +1,45 @@
 import * as React from 'react';
+import { Select } from 'dashkit-ui';
 import { connect } from 'react-redux';
-import * as indexActions from '../../redux/index/actions';
-import { guideMetroRoutes } from '../../lib/metro';
-
+import { routerActions } from 'react-router-redux';
+import * as indexActions from '../../redux/list/index';
+import { RootState } from '../../redux/reducers';
+import { WithRedux } from '../../redux/typings';
 import './style.scss';
 
-class List extends React.Component {
+const { Option, OptionGroup } = Select;
+const mapStateToProps = ({ list }: RootState) => {
+  return {
+    list,
+  };
+}
+const mapDispatchToProps = {
+  ...indexActions,
+  ...routerActions,
+};
+type Props = WithRedux<typeof mapStateToProps, typeof mapDispatchToProps>;
+
+class List extends React.Component<Props> {
   componentDidMount() {
-    // const routes = guideMetroRoutes('Kent Ridge', 'Changi Airport');
-    const routes = guideMetroRoutes('Jurong East', 'Kent Ridge');
-    console.log(routes);
-    this.props.fetchStationDataAction();
+    this.props.fetchStationData();
+    console.log(this.props.list);
   }
 
   render() {
+    const { stationData } = this.props.list;
     return (
       <div className="index-container">
+        <Select>
+          {Object.keys(stationData).map(station =>
+            <Option key={station} value={station}>{station}</Option>
+          )}
+        </Select>
       </div>
     );
   }
 };
 
-function mapStateToProps({ index }) {
-  return {
-    index,
-  };
-}
-
-export default connect(mapStateToProps, indexActions)(List);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(List);
