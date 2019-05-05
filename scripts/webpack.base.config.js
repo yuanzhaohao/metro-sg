@@ -2,6 +2,7 @@
 
 const path = require('path');
 const exists = require('fs').existsSync;
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const utils = require('./utils');
 const config = require('./config');
 const srcPath = utils.resolve(config.srcPath);
@@ -144,6 +145,20 @@ module.exports = {
         test: /\.json$/,
         loader: 'json-loader'
       },
+    ]
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          compress: false,
+          ecma: 6,
+          mangle: true
+        },
+        sourceMap: true
+      })
     ]
   },
   stats: {
