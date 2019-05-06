@@ -24,3 +24,11 @@ export const actionMetroRoutes = createAction(
     to,
   }),
 );
+
+export const actionUpdateStation = createAction(
+  (station: string, key: string) => ({
+    type: ActionTypes.UPDATE_STATION,
+    station,
+    key,
+  }),
+);

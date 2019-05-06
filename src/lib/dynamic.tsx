@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LoadingCircle from '../components/common/loading-circle';
+import Loading from '../components/common/loading';
 
 export type DynamicImportCallback<P> = () => Promise<{
   default: React.ComponentType<P>;
@@ -30,9 +30,7 @@ export default function dynamic<P>(importComponent: DynamicImportCallback<P>) {
       return (
         this.state.component
           ? <this.state.component {...this.props} />
-          : <div className="loading-page">
-            <LoadingCircle type="light" />
-          </div>
+          : <Loading />
       );
     }
   }

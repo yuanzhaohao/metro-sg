@@ -20,9 +20,9 @@ module.exports = {
       'react-router-redux',
       'redux-thunk',
     ],
-    'vendor-dashkit': [
-      'dashkit-ui',
-    ],
+    // 'vendor-dashkit': [
+    //   'dashkit-ui',
+    // ],
     'vendor-lib': [
       'classnames',
       'axios',

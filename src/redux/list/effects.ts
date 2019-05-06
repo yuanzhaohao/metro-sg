@@ -26,3 +26,9 @@ export function getMetroRoutes(from: string, to: string): SideEffect<void> {
     dispatch(actions.actionMetroRoutes(from, to));
   }
 }
+
+export function updateStation(value: string, key: string): SideEffect<void> {
+  return async (dispatch) => {
+    dispatch(actions.actionUpdateStation(value, key));
+  }
+}

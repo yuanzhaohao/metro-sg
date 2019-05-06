@@ -7,6 +7,8 @@ export type ListState = {
   isLoading: boolean;
   isError: boolean;
   data?: OriginStationData;
+  fromStation: string;
+  toStation: string;
   lineData: LineData,
   stationData: StationData,
   shortestRoutes?: ShortestRoutes
@@ -14,6 +16,8 @@ export type ListState = {
 const initialState: ListState = {
   isLoading: false,
   isError: false,
+  fromStation: '',
+  toStation: '',
   lineData: {},
   stationData: {},
 };
@@ -50,6 +54,13 @@ export default function (state = initialState, action: RootAction) {
       return {
         ...state,
         shortestRoutes,
+      };
+    }
+    case ActionTypes.UPDATE_STATION: {
+      const { station, key } = action;
+      return {
+        ...state,
+        [key]: station,
       };
     }
     default:
