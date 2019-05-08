@@ -18,7 +18,7 @@ export default function dynamic<P>(importComponent: DynamicImportCallback<P>) {
       };
     }
 
-    async componentDidMount() {
+    public async componentDidMount() {
       const { default: component } = await importComponent();
 
       this.setState({
@@ -26,12 +26,8 @@ export default function dynamic<P>(importComponent: DynamicImportCallback<P>) {
       });
     }
 
-    render() {
-      return (
-        this.state.component
-          ? <this.state.component {...this.props} />
-          : <Loading />
-      );
+    public render() {
+      return this.state.component ? <this.state.component {...this.props} /> : <Loading />;
     }
-  }
+  };
 }

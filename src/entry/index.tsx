@@ -14,15 +14,12 @@ const App = () => (
   <Provider store={store}>
     <Router>
       <Switch>
-        <Route exact path="/" component={List} />
-        <Route exact path="/:startStation/:endStation" component={List} />
-        <Route exact path="*" component={List} />
+        <Route exact={true} path="/" component={List} />
+        <Route exact={true} path="/:startStation/:endStation" component={List} />
+        <Route exact={true} path="*" component={List} />
       </Switch>
     </Router>
   </Provider>
 );
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('app')
-);
+ReactDOM.render(<App />, document.getElementById('app'));

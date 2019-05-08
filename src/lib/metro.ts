@@ -136,9 +136,7 @@ export function getOriginData(originData: OriginStationData) {
   lineData.CC.transformStations = lineData.CC.transformStations
     .filter((v) => includes(lineData.CC.stations, v))
     .concat(intersection.slice(0, 1));
-  lineData.CE.transformStations = lineData.CE.transformStations.concat(
-    intersection.slice(0, 1),
-  );
+  lineData.CE.transformStations = lineData.CE.transformStations.concat(intersection.slice(0, 1));
 
   return {
     lineData,

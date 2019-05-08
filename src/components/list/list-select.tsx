@@ -11,7 +11,7 @@ const mapStateToProps = ({ list }: RootState) => {
   return {
     list,
   };
-}
+};
 const mapDispatchToProps = {
   ...indexActions,
   ...routerActions,
@@ -19,7 +19,7 @@ const mapDispatchToProps = {
 type Props = WithRedux<typeof mapStateToProps, typeof mapDispatchToProps>;
 
 class ListSelect extends React.Component<Props> {
-  render() {
+  public render() {
     const { lineData, fromStation, toStation } = this.props.list;
     return (
       <div className="search-station-select">
@@ -31,13 +31,15 @@ class ListSelect extends React.Component<Props> {
           prefix="circle"
           prefixClassName="prefix-from"
         >
-          {Object.keys(lineData).map(lineKey =>
+          {Object.keys(lineData).map((lineKey) => (
             <OptionGroup label={lineKey} key={lineKey}>
-              {lineData[lineKey].stations.map(station =>
-                <Option key={station} value={station} filterOption={this.filterOption}>{station}</Option>
-              )}
+              {lineData[lineKey].stations.map((station) => (
+                <Option key={station} value={station} filterOption={this.filterOption}>
+                  {station}
+                </Option>
+              ))}
             </OptionGroup>
-          )}
+          ))}
         </Select>
         <Select
           placeholder="Destination"
@@ -47,28 +49,28 @@ class ListSelect extends React.Component<Props> {
           prefix="map-pin"
           prefixClassName="prefix-to"
         >
-          {Object.keys(lineData).map(lineKey =>
+          {Object.keys(lineData).map((lineKey) => (
             <OptionGroup label={lineKey} key={lineKey}>
-              {lineData[lineKey].stations.map(station =>
-                <Option key={station} value={station} filterOption={this.filterOption}>{station}</Option>
-              )}
+              {lineData[lineKey].stations.map((station) => (
+                <Option key={station} value={station} filterOption={this.filterOption}>
+                  {station}
+                </Option>
+              ))}
             </OptionGroup>
-          )}
+          ))}
         </Select>
       </div>
     );
   }
 
-
-
-  filterOption(inputValue: string, value: string) {
+  private filterOption(inputValue: string, value: string) {
     return value.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
   }
 
-  handleStationChange(key: string, value: any) {
+  private handleStationChange(key: string, value: any) {
     this.props.updateStation(value, key);
   }
-};
+}
 
 export default connect(
   mapStateToProps,

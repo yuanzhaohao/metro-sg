@@ -9,4 +9,4 @@ export type RootState = {
 export const rootReducer = {
   router: routerReducer,
   list: ListReducer,
-}
+};

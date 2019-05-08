@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node scripts/dev.js",
-    "format": "prettier --parser typescript './src/**/*.{ts,tsx}' --write && prettier './src/**/*.{js,json,md}' --write",
+    "format": "prettier --parser typescript './src/**/*.{ts,tsx}' --write",
     "lint": "tslint --project tsconfig.json './src/**/*.{ts,tsx}' && tsc --noEmit --pretty",
     "lint:fix": "tslint --project tsconfig.json --fix './src/**/*.{ts,tsx}' && tsc --noEmit --pretty"
   },

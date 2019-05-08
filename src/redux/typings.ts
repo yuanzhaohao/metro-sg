@@ -7,17 +7,13 @@ export type AnyFunction<R = any> = (...args: any[]) => R;
 export type SideEffect<T> = ThunkAction<Promise<T>, RootState, {}, RootAction>;
 
 export type ConvertThunkMethods<A extends {}> = {
-  [K in keyof A]: A[K] extends (
-    ...args: infer T
-  ) => ThunkAction<infer R, any, any, any>
+  [K in keyof A]: A[K] extends (...args: infer T) => ThunkAction<infer R, any, any, any>
     ? (...args: T) => R
     : A[K]
 };
 
-export type WithRedux<
-  S extends (obj: {}) => {},
-  A extends {} = {}
-> = ReturnType<S> & ConvertThunkMethods<A>;
+export type WithRedux<S extends (obj: {}) => {}, A extends {} = {}> = ReturnType<S> &
+  ConvertThunkMethods<A>;
 
 type ActionsUnionSingleReducer<T extends { [key: string]: AnyFunction }> = {
   [K in keyof T]: ReturnType<T[K]>
@@ -28,11 +24,11 @@ export type ActionsUnion<
 > = { [K in keyof T]: ActionsUnionSingleReducer<T[K]> }[keyof T];
 
 export type OriginStationData = {
-  [key: string]: { [key: string]: number | number[] }
+  [key: string]: { [key: string]: number | number[] };
 };
 
 export type LineItem = {
-  isRoundLine?: boolean,
+  isRoundLine?: boolean;
   stations: string[];
   transformStations: string[];
 };
