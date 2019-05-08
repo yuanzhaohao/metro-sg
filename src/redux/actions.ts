@@ -8,4 +8,4 @@ const rootActions = {
 
 type AppActions = ActionsUnion<typeof rootActions>;
 export type ReactRouterActions = RouterAction | LocationChangeAction;
-export type RootAction = AppActions | ReactRouterActions
+export type RootAction = AppActions | ReactRouterActions;

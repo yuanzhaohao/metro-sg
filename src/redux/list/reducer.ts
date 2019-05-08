@@ -9,9 +9,9 @@ export type ListState = {
   data?: OriginStationData;
   fromStation: string;
   toStation: string;
-  lineData: LineData,
-  stationData: StationData,
-  shortestRoutes?: ShortestRoutes
+  lineData: LineData;
+  stationData: StationData;
+  shortestRoutes?: ShortestRoutes;
 };
 const initialState: ListState = {
   isLoading: false,
@@ -22,8 +22,8 @@ const initialState: ListState = {
   stationData: {},
 };
 
-export default function (state = initialState, action: RootAction) {
-  switch(action.type) {
+export default function(state = initialState, action: RootAction) {
+  switch (action.type) {
     case ActionTypes.FETCH_STATION_DATA: {
       return {
         ...state,
@@ -66,4 +66,4 @@ export default function (state = initialState, action: RootAction) {
     default:
       return state;
   }
-};
+}

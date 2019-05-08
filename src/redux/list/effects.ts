@@ -24,11 +24,11 @@ export function fetchStationData(): SideEffect<void> {
 export function getMetroRoutes(from: string, to: string): SideEffect<void> {
   return async (dispatch) => {
     dispatch(actions.actionMetroRoutes(from, to));
-  }
+  };
 }
 
 export function updateStation(value: string, key: string): SideEffect<void> {
   return async (dispatch) => {
     dispatch(actions.actionUpdateStation(value, key));
-  }
+  };
 }
