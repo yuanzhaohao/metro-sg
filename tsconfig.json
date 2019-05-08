@@ -12,11 +12,7 @@
     "sourceMap": false,
     "removeComments": true,
     "experimentalDecorators": true,
-    "baseUrl": "."
+    "baseUrl": "./"
   },
-  "include": [
-    "./src/**/*.tsx",
-    "./src/**/*.ts",
-    "./typings/**/*"
-  ]
+  "include": ["./typing-workarounds/*.ts", "./src/**/*.ts", "./src/**/*.tsx", "./src/**/*.json"]
 }
