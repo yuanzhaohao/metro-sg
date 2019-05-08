@@ -14,5 +14,9 @@
     "experimentalDecorators": true,
     "baseUrl": "."
   },
-  "include": ["./src/**/*", "./typings/**/*"]
+  "include": [
+    "./src/**/*.tsx",
+    "./src/**/*.ts",
+    "./typings/**/*"
+  ]
 }

@@ -39,6 +39,7 @@
     "html-webpack-plugin": "^3.2.0",
     "http-proxy-middleware": "^0.19.1",
     "json-loader": "^0.5.7",
+    "lint-staged": "^8.1.6",
     "node-sass": "^4.11.0",
     "portfinder": "^1.0.20",
     "postcss-loader": "^3.0.0",
@@ -47,6 +48,8 @@
     "scss-loader": "0.0.1",
     "style-loader": "^0.23.1",
     "ts-loader": "^5.3.3",
+    "tslint": "^5.16.0",
+    "tslint-react": "^4.0.0",
     "typescript": "^3.4.1",
     "uglifyjs-webpack-plugin": "^2.1.2",
     "url-loader": "^1.1.2",
@@ -57,7 +60,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
-    "dashkit-ui": "0.0.11-beta.7",
+    "dashkit-ui": "0.0.11-beta.8",
     "lodash-es": "^4.17.11",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -66,5 +69,21 @@
     "react-router-redux": "^4.0.8",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
+  },
+  "lint-staged": {
+    "*.{js,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{ts,tsx}": [
+      "prettier --parser typescript --write",
+      "tslint --project tsconfig.json --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
