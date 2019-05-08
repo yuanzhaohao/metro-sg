@@ -89,3 +89,16 @@ $active-color: #2c7be5;
   background-color: #fff;
   box-sizing: border-box;
 }
+
+@media only screen and (min-width : 320px) and (max-width : 568px) {
+  .index-container {
+    width: 100%;
+    top: 0;
+    padding: 0;
+  }
+
+  .search-panel,
+  .route-panel {
+    border: 0;
+  }
+}
