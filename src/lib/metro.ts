@@ -1,12 +1,17 @@
 import { includes, forEach, isArray } from 'lodash-es';
-import { OriginStationData, LineData, StationData, ShortestRoutes } from '../redux/typings'
+import { OriginStationData, LineData, StationData, ShortestRoutes } from '../redux/typings';
 
 export type StationListType = string[][];
 export type HistoryType = {
-  [key: string]: boolean,
+  [key: string]: boolean;
 };
 
-export function guideMetroRoutes(lineData: LineData, stationData: StationData, fromStation: string, toStation: string) {
+export function guideMetroRoutes(
+  lineData: LineData,
+  stationData: StationData,
+  fromStation: string,
+  toStation: string,
+) {
   if (!stationData[fromStation]) {
     throw new Error(`${fromStation} is not foound!`);
   }
@@ -19,14 +24,14 @@ export function guideMetroRoutes(lineData: LineData, stationData: StationData, f
   }
   const startLines = stationData[fromStation];
   const shortestRoutes: ShortestRoutes = [];
+  const minTransCount = 5;
   let history: HistoryType | null = {};
-  let minTransCount = 5;
 
-  for (let line of startLines) {
+  for (const line of startLines) {
     guideRoute(fromStation, toStation, line, [], history, 0);
   }
 
-  shortestRoutes.sort(function(a, b) {
+  shortestRoutes.sort((a, b) => {
     return a.length - b.length;
   });
   history = null;
@@ -43,20 +48,22 @@ export function guideMetroRoutes(lineData: LineData, stationData: StationData, f
     if (transNum > minTransCount) {
       return;
     }
-    if (isSameLine(lineData, stationData, startStation, endStation, lineKey)) {
+    if (isSameLine(lineData, startStation, endStation, lineKey)) {
       const currentRoute = cutLine(lineData, startStation, endStation, lineKey);
 
-      stationList.push(currentRoute)
-      const shortestRoute = stationList.reduce((accumulator, currentValue) => accumulator.concat(currentValue));
+      stationList.push(currentRoute);
+      const shortestRoute = stationList.reduce((accumulator, currentValue) =>
+        accumulator.concat(currentValue),
+      );
       shortestRoutes.push(Array.from(new Set(shortestRoute)));
 
       stationList.splice(stationList.indexOf(currentRoute), 1);
       return;
     }
 
-    const transformStations = lineData[lineKey].transformStations.filter(v => v !== startStation);
+    const transformStations = lineData[lineKey].transformStations.filter((v) => v !== startStation);
 
-    forEach(transformStations, station => {
+    forEach(transformStations, (station) => {
       const currentRoute = cutLine(lineData, startStation, station, lineKey);
       const historyKey = [startStation, station, lineKey].join(',');
       const newStationList = stationList.slice();
@@ -66,8 +73,8 @@ export function guideMetroRoutes(lineData: LineData, stationData: StationData, f
       }
       history[historyKey] = true;
 
-      const restLines = stationData[station].filter(v => v !== lineKey);
-      forEach(restLines, restLineKey => {
+      const restLines = stationData[station].filter((v) => v !== lineKey);
+      forEach(restLines, (restLineKey) => {
         const newTransNum = transNum + 1;
 
         newStationList.push(currentRoute);
@@ -80,7 +87,7 @@ export function guideMetroRoutes(lineData: LineData, stationData: StationData, f
 
 export function getOriginData(originData: OriginStationData) {
   const lineData: LineData = {};
-  const stationData: StationData  = {};
+  const stationData: StationData = {};
 
   forEach(originData, (stationLines, stationKey) => {
     const stationLinesKeys = Object.keys(stationLines);
@@ -103,7 +110,7 @@ export function getOriginData(originData: OriginStationData) {
       }
 
       if (isArray(stationLine)) {
-        for(let k of stationLine) {
+        for (const k of stationLine) {
           line.stations[k] = stationKey;
         }
         line.isRoundLine = true;
@@ -122,12 +129,16 @@ export function getOriginData(originData: OriginStationData) {
   });
 
   // CC & CE line
-  const ccList = lineData['CC'].stations;
-  const ceList = lineData['CE'].stations;
-  let intersection = ccList.filter(v => includes(ceList, v));
-  lineData['CC'].stations = ccList.filter(v => !includes(intersection.slice(1), v));
-  lineData['CC'].transformStations = lineData['CC'].transformStations.filter(v => includes(lineData['CC'].stations, v)).concat(intersection.slice(0, 1));
-  lineData['CE'].transformStations = lineData['CE'].transformStations.concat(intersection.slice(0, 1));
+  const ccList = lineData.CC.stations;
+  const ceList = lineData.CE.stations;
+  const intersection = ccList.filter((v) => includes(ceList, v));
+  lineData.CC.stations = ccList.filter((v) => !includes(intersection.slice(1), v));
+  lineData.CC.transformStations = lineData.CC.transformStations
+    .filter((v) => includes(lineData.CC.stations, v))
+    .concat(intersection.slice(0, 1));
+  lineData.CE.transformStations = lineData.CE.transformStations.concat(
+    intersection.slice(0, 1),
+  );
 
   return {
     lineData,
@@ -135,7 +146,7 @@ export function getOriginData(originData: OriginStationData) {
   };
 }
 
-function isSameLine(lineData: LineData, stationData: StationData, startStation: string, endStation: string, lineKey: string) {
+function isSameLine(lineData: LineData, startStation: string, endStation: string, lineKey: string) {
   const { stations } = lineData[lineKey];
   return includes(stations, startStation) && includes(stations, endStation);
 }
@@ -150,15 +161,14 @@ function cutLine(lineData: LineData, startStation: string, endStation: string, l
   const min = Math.min(startIndex, endIndex);
 
   if (isRoundLine && indexAbs > length - indexAbs) {
-    return (startIndex > endIndex
+    return startIndex > endIndex
       ? stations.slice(max, length).concat(stations.slice(0, min + 1))
-      : stations.slice(0, min + 1).reverse().concat(stations.slice(max, length).reverse())
-    );
+      : stations
+          .slice(0, min + 1)
+          .reverse()
+          .concat(stations.slice(max, length).reverse());
   }
 
   const result = stations.slice(min, max + 1);
-  return (startIndex > endIndex
-    ? result.reverse()
-    : result
-  );
+  return startIndex > endIndex ? result.reverse() : result;
 }
