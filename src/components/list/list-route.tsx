@@ -25,7 +25,7 @@ class ListRoute extends React.Component<Props> {
         {shortestRoutes.map((route, index) => (
           <Card key={route.join(',')} index={index}>
             <Card.Header>Route {index + 1}</Card.Header>
-            <Card.Body>{route.join('->')}</Card.Body>
+            <Card.Body>{route.join(' -> ')}</Card.Body>
           </Card>
         ))}
       </Card.Collapse>
