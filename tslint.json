@@ -11,7 +11,7 @@
       "variables-before-functions"
     ],
     "jsx-no-lambda": false,
-    "ordered-imports": true,
+    "ordered-imports": false,
     "object-literal-sort-keys": false,
     "interface-over-type-literal": false,
     "deprecation": true,

@@ -1,7 +1,7 @@
 import { Message } from 'dashkit-ui';
 import * as actions from './actions';
-import { SideEffect, OriginStationData } from '../typings';
 import { getJSON } from '../../lib/utils';
+import { SideEffect, OriginStationData } from '../typings';
 
 export function fetchStationData(): SideEffect<void> {
   return async (dispatch) => {

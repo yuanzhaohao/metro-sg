@@ -21,15 +21,15 @@ class ListRoute extends React.Component<Props> {
     const { shortestRoutes } = this.props.list;
     return (
       shortestRoutes && shortestRoutes.length
-      ? <Card.Collapse className="route-panel">
-        {shortestRoutes.map((route, index) =>
-          <Card key={route.join(',')} index={index}>
-            <Card.Header>Route {index + 1}</Card.Header>
-            <Card.Body>{route.join(',')}</Card.Body>
-          </Card>
-        )}
-      </Card.Collapse>
-      : null
+        ? <Card.Collapse className="route-panel">
+          {shortestRoutes.map((route, index) =>
+            <Card key={route.join(',')} index={index}>
+              <Card.Header>Route {index + 1}</Card.Header>
+              <Card.Body>{route.join('->')}</Card.Body>
+            </Card>
+          )}
+        </Card.Collapse>
+        : null
     );
   }
 };
