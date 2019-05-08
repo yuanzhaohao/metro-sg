@@ -1,24 +1,75 @@
+$pannel-space: 24px;
+$font-color: #6c757d;
+$active-color: #2c7be5;
+
 .index-container {
-  width: 100%;
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  width: 360px;
+  transform: translate3d(-50%, 0, 0);
 }
 
-.top-panel {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 320px;
-  // height: 320px;
+.search-panel {
+  width: 100%;
+  padding: $pannel-space;
+  border: 1px solid #d2ddec;
   background-color: #fff;
-  padding: 24px;
   box-sizing: border-box;
-  box-shadow: 0 0 10px rgba(0,0,0,.15);
   border-radius: 5px;
-  transform: translate3d(-50%, -50%, 0);
+}
+
+.search-station-reverse {
+  width: $pannel-space;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: $pannel-space;
+    height: $pannel-space;
+    color: $font-color;
+    transition: color 300ms ease;
+
+    &:hover {
+      color: $active-color;
+    }
+  }
+
+  &-down,
+  &-up {
+    font-size: 16px;
+    // font-weight: 700;
+  }
+  &-up {
+    margin-top: -5px;
+  }
+  &-down {
+    margin-top: 5px;
+    margin-left: -10px;
+  }
+}
+
+.search-station-select {
+  width: 100%;
+
+  .prefix-from {
+    color: #2c7be5;
+  }
+
+  .prefix-to {
+    color: #e63757;
+  }
 }
 
 .search-btn {
   width: 100%;
-  margin-top: 24px;
+  margin-top: $pannel-space;
+  padding: 0 $pannel-space * 2;
 }
 
 .from-station,
@@ -28,4 +79,13 @@
 
 .to-station {
   margin-top: 16px;
+}
+
+.route-panel {
+  width: 100%;
+  margin-top: 10px;
+  padding: 24px;
+  border: 1px solid #d2ddec;
+  background-color: #fff;
+  box-sizing: border-box;
 }

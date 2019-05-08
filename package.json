@@ -40,7 +40,7 @@
     "http-proxy-middleware": "^0.19.1",
     "json-loader": "^0.5.7",
     "node-sass": "^4.11.0",
-    "portfinder": "^10px;1.0.20",
+    "portfinder": "^1.0.20",
     "postcss-loader": "^3.0.0",
     "react-dev-utils": "^8.0.0",
     "sass-loader": "^7.1.0",
@@ -57,7 +57,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
-    "dashkit-ui": "0.0.9",
+    "dashkit-ui": "0.0.11-beta.7",
     "lodash-es": "^4.17.11",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

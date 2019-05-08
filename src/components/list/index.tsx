@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { Select, Button, Message, Spin } from 'dashkit-ui';
+import { Button, Message, Spin, Icon } from 'dashkit-ui';
 import { connect } from 'react-redux';
 import { routerActions } from 'react-router-redux';
 import * as indexActions from '../../redux/list/effects';
 import { RootState } from '../../redux/reducers';
 import { WithRedux } from '../../redux/typings';
+import ListSelect from './list-select';
+import ListRoute from './list-route';
 import './style.scss';
 
-const { Option, OptionGroup } = Select;
 const mapStateToProps = ({ list }: RootState) => {
   return {
     list,
@@ -21,54 +22,31 @@ type Props = WithRedux<typeof mapStateToProps, typeof mapDispatchToProps>;
 
 class List extends React.Component<Props> {
   componentDidMount() {
-    this.props.fetchStationData();
+    const { data, isLoading } = this.props.list;
+    if (!data && !isLoading) {
+      this.props.fetchStationData();
+    }
   }
 
   render() {
-    const { lineData, shortestRoutes, isLoading, fromStation, toStation } = this.props.list;
-    console.log(shortestRoutes);
+    const { isLoading } = this.props.list;
     return (
-      <Spin wrapperClassName="top-panel" spinning={isLoading}>
-        <Select
-          placeholder="Starting Point"
-          value={fromStation}
-          onChange={this.handleStationChange.bind(this, 'fromStation')}
-          className="from-station"
-        >
-          {Object.keys(lineData).map(lineKey =>
-            <OptionGroup label={lineKey} key={lineKey}>
-              {lineData[lineKey].stations.map(station =>
-                <Option key={station} value={station} filterOption={this.filterOption}>{station}</Option>
-              )}
-            </OptionGroup>
-          )}
-        </Select>
-        <Select
-          placeholder="Destination"
-          value={toStation}
-          onChange={this.handleStationChange.bind(this, 'toStation')}
-          className="to-station"
-        >
-          {Object.keys(lineData).map(lineKey =>
-            <OptionGroup label={lineKey} key={lineKey}>
-              {lineData[lineKey].stations.map(station =>
-                <Option key={station} value={station} filterOption={this.filterOption}>{station}</Option>
-              )}
-            </OptionGroup>
-          )}
-        </Select>
+      <Spin wrapperClassName="index-container" spinning={isLoading}>
+        <div className="search-panel">
+          <ListSelect />
+          <Button
+            className="search-btn"
+            onClick={this.handleSearch}
+            type="primary"
+            icon="search"
+          >
+            Search
+          </Button>
+        </div>
 
-        <Button className="search-btn" onClick={this.handleSearch} type="primary">Search</Button>
+        <ListRoute />
       </Spin>
     );
-  }
-
-  filterOption(inputValue: string, value: string) {
-    return value.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1;
-  }
-
-  handleStationChange(key: string, value: any) {
-    this.props.updateStation(value, key);
   }
 
   handleSearch = () => {
