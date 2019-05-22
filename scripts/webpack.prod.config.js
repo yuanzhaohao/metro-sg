@@ -11,7 +11,7 @@ const buildWebpackConfig = merge(baseConfig, {
   mode: 'production',
   output: {
     path: distPath,
-    filename: '[name].[chunkhash].js',
+    filename: 'js/[name].[chunkhash:7].js',
   },
 });
 

@@ -27,7 +27,7 @@ exports.getEntry = function(globPath) {
   return entries;
 };
 
-const prefix = '   douban-react';
+const prefix = '   metro-sg';
 const sep = chalk.gray('·');
 
 /**

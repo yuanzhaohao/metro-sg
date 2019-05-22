@@ -8,6 +8,9 @@ const webpackConfig = require('./webpack.prod.config');
 const distPath = utils.resolve(config.distPath);
 
 rm(distPath, () => {
-  console.log(webpackConfig);
-  webpack(webpackConfig);
+  webpack(webpackConfig, (err, stats) => {
+    if (err || stats.hasErrors()) {
+      utils.fatal(err);
+    }
+  });
 });
