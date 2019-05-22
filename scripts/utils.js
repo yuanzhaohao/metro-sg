@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const path = require('path');
 const glob = require('glob');
@@ -7,24 +7,25 @@ const format = require('util').format;
 
 exports.resolve = function(dir) {
   return path.join(__dirname, '..', dir || '');
-}
+};
 
 exports.getEntry = function(globPath) {
   const files = Array.prototype.concat(
     glob.sync(path.join(globPath, './*.tsx')),
+    glob.sync(path.join(globPath, './*.ts')),
     glob.sync(path.join(globPath, './*.js')),
-  )
-  const entries = {}
+  );
+  const entries = {};
 
-  files.forEach(filepath => {
-    const name = filepath.replace(/(.*\/)*([^.]+).*/ig, '$2')
+  files.forEach((filepath) => {
+    const name = filepath.replace(/(.*\/)*([^.]+).*/gi, '$2');
     if (name && !entries[name]) {
-      entries[name] = filepath
+      entries[name] = filepath;
     }
-  })
+  });
 
-  return entries
-}
+  return entries;
+};
 
 const prefix = '   douban-react';
 const sep = chalk.gray('·');
@@ -35,10 +36,10 @@ const sep = chalk.gray('·');
  * @param {String} message
  */
 
-exports.log = function () {
-  const msg = format.apply(format, arguments)
-  console.log(chalk.white(prefix), sep, msg)
-}
+exports.log = function() {
+  const msg = format.apply(format, arguments);
+  console.log(chalk.white(prefix), sep, msg);
+};
 
 /**
  * Log an error `message` to the console and exit.
@@ -46,12 +47,12 @@ exports.log = function () {
  * @param {String} message
  */
 
-exports.fatal = function (message) {
+exports.fatal = function(message) {
   if (message instanceof Error) message = message.message.trim();
   const msg = format.apply(format, arguments);
   console.error(chalk.red(prefix), sep, msg);
   process.exit(1);
-}
+};
 
 /**
  * Log a success `message` to the console and exit.
@@ -59,7 +60,7 @@ exports.fatal = function (message) {
  * @param {String} message
  */
 
-exports.success = function () {
+exports.success = function() {
   const msg = format.apply(format, arguments);
   console.log(chalk.white(prefix), sep, msg);
-}
+};

@@ -4,7 +4,9 @@
   "description": "Metro-sg for Zendesk",
   "main": "index.js",
   "scripts": {
-    "start": "node scripts/dev.js",
+    "start": "npm run dev",
+    "dev": "node scripts/dev.js",
+    "prod": "node scripts/prod.js",
     "format": "prettier --parser typescript './src/**/*.{ts,tsx}' --write",
     "lint": "tslint --project tsconfig.json './src/**/*.{ts,tsx}' && tsc --noEmit --pretty",
     "lint:fix": "tslint --project tsconfig.json --fix './src/**/*.{ts,tsx}' && tsc --noEmit --pretty"
@@ -48,8 +50,8 @@
     "postcss-loader": "^3.0.0",
     "prettier": "^1.17.0",
     "react-dev-utils": "^8.0.0",
+    "rimraf": "^2.6.3",
     "sass-loader": "^7.1.0",
-    "scss-loader": "0.0.1",
     "style-loader": "^0.23.1",
     "ts-loader": "^5.3.3",
     "tslint": "^5.16.0",
@@ -64,7 +66,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
-    "dashkit-ui": "0.0.11-beta.8",
+    "dashkit-ui": "0.0.13",
     "lodash-es": "^4.17.11",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

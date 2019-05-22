@@ -15,3 +15,5 @@ selenium-debug.log
 *.sln
 
 .happypack_cache
+
+dist
